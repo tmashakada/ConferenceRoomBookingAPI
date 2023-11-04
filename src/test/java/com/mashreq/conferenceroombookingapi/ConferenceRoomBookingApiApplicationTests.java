@@ -1,4 +1,4 @@
-package com.mashreq.ConferenceRoomBookingAPI;
+package com.mashreq.conferenceroombookingapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
