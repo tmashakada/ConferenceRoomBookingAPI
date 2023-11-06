@@ -1,7 +1,10 @@
 # ConferenceRoomBookingAPI
 
-
-** #Technology Stack Used **
+# Technology Stack Used
+# Java 17
+# Spring Boot 3
+# Maven
+# H2 in memory Database
  
 
 git clone https://github.com/tmashakada/ConferenceRoomBookingAPI.git
