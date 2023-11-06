@@ -1,12 +1,5 @@
 # ConferenceRoomBookingAPI
 
-# Technology Stack Used
-# 1. Java 17
-# 2 .Spring Boot 3
-# 3. Maven
-# 4. H2 in memory Database
- 
-
 git clone https://github.com/tmashakada/ConferenceRoomBookingAPI.git
 
 1. Run the Spring Boot app with the java -jar command
