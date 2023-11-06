@@ -43,13 +43,17 @@ git clone https://github.com/tmashakada/ConferenceRoomBookingAPI.git
 	
 	
 	8.InMemory Database URL
+   
 	   http://localhost:8082/h2-console
+   
 	   username:sa
+   
 	   password:password
+   
 	   JDBC URL: jdbc:h2:mem:bookingsdb
 	
 	
-2. Run the ConferenceRoomBookingAPI with Maven Plugin
+3. Run the ConferenceRoomBookingAPI with Maven Plugin
      
 	 mvn spring-boot:run   when maven is installed on the machine
 	 
