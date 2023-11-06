@@ -65,5 +65,32 @@ git clone https://github.com/tmashakada/ConferenceRoomBookingAPI.git
      
 	 mvn spring-boot:run   when maven is installed on the machine
 	 
-	 ./mvnw spring-boot:run  when macen is not installed the machine
-	 
+	 /mvnw spring-boot:run  when macen is not installed the machine
+## Up & Running
+### Run with Maven
+```bash
+$ git clone https://github.com/tmashakada/ConferenceRoomBookingAPI.git
+$ cd ConferenceRoomBookingAPI
+$ mvn spring-boot:run 
+```
+The Swagger UI is available at `http://localhost:8082/swagger-ui/index.html`.
+
+### Swagger UI
+The API can be tested via the Swagger UI:
+For example, to add a new booking, expand the `POST` api/bookings operation.
+ Then click on the `Try it out`, add the payload below to
+the `Request Body` text area, and click on the `Execute`:
+
+```json
+{
+  "startDateTime": "2023-11-06 14:00",
+  "endDatetime": "2023-11-06 14:30",
+  "participants": 5
+  
+}
+```
+![Swagger UI Add Booking 1](/readme/swagger-add-booking-1.png)
+
+If the operation is successful, you will get the following response:
+
+![Swagger UI Add Booking 1](/readme/swagger-add-booking-2.png)	 
