@@ -35,6 +35,7 @@ git clone https://github.com/tmashakada/ConferenceRoomBookingAPI.git
 	
 	
 	6.Get all Available Rooms
+   
 	    http://localhost:8082/api/rooms/available?startTime=2023-11-06 14:00&endTime=2023-11-06 14:30
 	
 	7.Get all maintenance-times
