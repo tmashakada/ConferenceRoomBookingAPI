@@ -1,5 +1,9 @@
 # ConferenceRoomBookingAPI
 
+
+** #Technology Stack Used **
+ 
+
 git clone https://github.com/tmashakada/ConferenceRoomBookingAPI.git
 
 1. Run the Spring Boot app with the java -jar command
