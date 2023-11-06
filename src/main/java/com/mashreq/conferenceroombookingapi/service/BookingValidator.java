@@ -53,7 +53,7 @@ public class BookingValidator {
     public   boolean isBookingValidCurrentDate(LocalDateTime startTime, LocalDateTime endTime) {
 
         LocalDate currentDate = LocalDate.now();
-        return !startTime.toLocalDate().isEqual(currentDate) || !endTime.toLocalDate().isEqual(currentDate);
+        return startTime.toLocalDate().isEqual(currentDate) && endTime.toLocalDate().isEqual(currentDate);
     }
 
 
