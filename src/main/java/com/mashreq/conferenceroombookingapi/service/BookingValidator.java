@@ -1,8 +1,8 @@
 package com.mashreq.conferenceroombookingapi.service;
 
 
-import com.mashreq.conferenceroombookingapi.model.entity.MaintenanceTiming;
-import com.mashreq.conferenceroombookingapi.repository.MaintenanceTimingRepository;
+import com.mashreq.conferenceroombookingapi.model.entity.MaintenanceTime;
+import com.mashreq.conferenceroombookingapi.repository.MaintenanceTimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.time.Duration;
@@ -13,11 +13,11 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class BookingValidator {
-    private  final MaintenanceTimingRepository maintenanceTimingRepository;
+    private  final MaintenanceTimeRepository maintenanceTimeRepository;
     public boolean isMaintainanceTimeConflict(LocalDateTime startTime, LocalDateTime endTime){
-        List<MaintenanceTiming> maintenanceTimings = maintenanceTimingRepository.findAll();
+        List<MaintenanceTime> maintenanceTimes = maintenanceTimeRepository.findAll();
 
-        boolean isMaintenanceConflict = maintenanceTimings.stream()
+        boolean isMaintenanceTime = maintenanceTimes.stream()
                 .anyMatch(maintenanceTiming -> {
                     if (startTime.toLocalTime().equals(maintenanceTiming.getStartTime())) {
                         return true;
@@ -30,7 +30,7 @@ public class BookingValidator {
                             endTime.toLocalTime().isAfter(maintenanceTiming.getStartTime());
                 });
 
-       return isMaintenanceConflict;
+       return isMaintenanceTime;
     }
     /** Validation logic for booking intervals**/
     public boolean isValidBookingInterval(LocalDateTime startTime, LocalDateTime endTime) {
@@ -38,10 +38,12 @@ public class BookingValidator {
         if (startTime.getMinute() % 15 != 0 || endTime.getMinute() % 15 != 0) {
             return false;
         }
+
         // Check if the end time is after the start time
         if (endTime.isBefore(startTime)) {
             return false;
         }
+
         // Calculate the duration of the booking
         Duration duration = Duration.between(startTime, endTime);
 
@@ -51,7 +53,7 @@ public class BookingValidator {
     public   boolean isBookingValidCurrentDate(LocalDateTime startTime, LocalDateTime endTime) {
 
         LocalDate currentDate = LocalDate.now();
-        return startTime.toLocalDate().isEqual(currentDate) && endTime.toLocalDate().isEqual(currentDate);
+        return !startTime.toLocalDate().isEqual(currentDate) || !endTime.toLocalDate().isEqual(currentDate);
     }
 
 

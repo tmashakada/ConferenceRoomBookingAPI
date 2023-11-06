@@ -3,6 +3,7 @@ package com.mashreq.conferenceroombookingapi.controller;
 import com.mashreq.conferenceroombookingapi.model.dto.BookingRequest;
 import com.mashreq.conferenceroombookingapi.model.entity.Booking;
 import com.mashreq.conferenceroombookingapi.service.BookingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class BookingController {
 
    private final BookingService bookingService;
     @PostMapping
-    public ResponseEntity<String> bookConferenceRoom(@RequestBody BookingRequest bookingRequest){
+    public ResponseEntity<String> bookConferenceRoom(@Valid @RequestBody BookingRequest bookingRequest){
         return ResponseEntity.ok(bookingService.bookConferenceRoom(bookingRequest));
 
     }

@@ -25,15 +25,8 @@ public class BookingServiceImpl implements BookingService{
     @Override
     @Transactional
     public String bookConferenceRoom(BookingRequest bookingRequest) {
-        if(!bookingValidator.isBookingValidCurrentDate(bookingRequest.getStartDateTime(), bookingRequest.getEndDatetime())){
-            throw   new BookingException("Booking can be done only for the current date");
-        }
-        if(!bookingValidator.isValidBookingInterval(bookingRequest.getStartDateTime(), bookingRequest.getEndDatetime())){
-            throw   new BookingException("Invalid Booking interval. Bookings must be in 15-minute intervals");
-        }
-        if(bookingValidator.isMaintainanceTimeConflict(bookingRequest.getStartDateTime(), bookingRequest.getEndDatetime())){
-            throw   new BookingException("Booking cannot be done during maintenance time");
-        }
+
+        validateBookingRequest(bookingRequest);
 
         List<ConferenceRoom> availableRooms = getAvailableRooms(bookingRequest.getStartDateTime(), bookingRequest.getEndDatetime());
         if(availableRooms.isEmpty()){
@@ -57,10 +50,10 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public List<ConferenceRoom> getAvailableRooms(LocalDateTime startTime, LocalDateTime endTime) {
-        if(!bookingValidator.isBookingValidCurrentDate(startTime,endTime)){
+        if(bookingValidator.isBookingValidCurrentDate(startTime, endTime)){
             throw   new BookingException("Booking can be done only for the current date");
         }
-        if(!bookingValidator.isValidBookingInterval(startTime,endTime)){
+        if(bookingValidator.isValidBookingInterval(startTime, endTime)){
             throw   new BookingException("Invalid Booking interval. Bookings must be in 15-minute intervals");
         }
 
@@ -113,6 +106,19 @@ public class BookingServiceImpl implements BookingService{
 
         return bookedConferenceRooms;
     }
-
+    private void validateBookingRequest(BookingRequest bookingRequest){
+        if (bookingRequest.getParticipants() <= 0) {
+            throw   new BookingException("Number of Participants must be greater than zero");
+        }
+        if(bookingValidator.isBookingValidCurrentDate(bookingRequest.getStartDateTime(), bookingRequest.getEndDatetime())){
+            throw   new BookingException("Booking can be done only for the current date");
+        }
+        if(bookingValidator.isValidBookingInterval(bookingRequest.getStartDateTime(), bookingRequest.getEndDatetime())){
+            throw   new BookingException("Invalid Booking interval. Bookings must be in 15-minute intervals");
+        }
+        if(bookingValidator.isMaintainanceTimeConflict(bookingRequest.getStartDateTime(), bookingRequest.getEndDatetime())){
+            throw   new BookingException("Booking cannot be done during maintenance time");
+        }
+    }
 
 }

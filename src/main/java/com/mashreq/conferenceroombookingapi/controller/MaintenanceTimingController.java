@@ -1,7 +1,7 @@
 package com.mashreq.conferenceroombookingapi.controller;
 
-import com.mashreq.conferenceroombookingapi.model.entity.MaintenanceTiming;
-import com.mashreq.conferenceroombookingapi.service.MaintenanceTimingService;
+import com.mashreq.conferenceroombookingapi.model.entity.MaintenanceTime;
+import com.mashreq.conferenceroombookingapi.service.MaintenanceTimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +13,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/maintenance-times")
 public class MaintenanceTimingController {
-    private final MaintenanceTimingService maintenanceTimingService;
+    private final MaintenanceTimeService maintenanceTimeService;
     @GetMapping
-    public List<MaintenanceTiming> getAll(){
-        return maintenanceTimingService.getAll();
+    public List<MaintenanceTime> getAll(){
+        return maintenanceTimeService.getAll();
     }
 }

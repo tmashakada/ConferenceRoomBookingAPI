@@ -1,9 +1,9 @@
 package com.mashreq.conferenceroombookingapi.config;
 
 import com.mashreq.conferenceroombookingapi.model.entity.ConferenceRoom;
-import com.mashreq.conferenceroombookingapi.model.entity.MaintenanceTiming;
+import com.mashreq.conferenceroombookingapi.model.entity.MaintenanceTime;
 import com.mashreq.conferenceroombookingapi.repository.ConferenceRoomRepository;
-import com.mashreq.conferenceroombookingapi.repository.MaintenanceTimingRepository;
+import com.mashreq.conferenceroombookingapi.repository.MaintenanceTimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoadData implements CommandLineRunner {
 
-    private final MaintenanceTimingRepository maintenanceTimingRepository;
+    private final MaintenanceTimeRepository maintenanceTimeRepository;
     private final ConferenceRoomRepository conferenceRoomRepository;
     @Override
     public void run(String... args) throws Exception {
@@ -25,14 +25,14 @@ public class LoadData implements CommandLineRunner {
 
     }
     private void saveMaintenanceTiming(){
-        if(maintenanceTimingRepository.findAll().isEmpty()){
+        if(maintenanceTimeRepository.findAll().isEmpty()){
 
-            List<MaintenanceTiming> maintenanceTimings=Arrays.asList(
-                    new MaintenanceTiming(LocalTime.of(9, 0),LocalTime.of(9,15 )),
-                    new MaintenanceTiming(LocalTime.of(13, 0),LocalTime.of(13,15 )),
-                    new MaintenanceTiming(LocalTime.of(17, 0),LocalTime.of(17,15 ))
+            List<MaintenanceTime> maintenanceTimes =Arrays.asList(
+                    new MaintenanceTime(LocalTime.of(9, 0),LocalTime.of(9,15 )),
+                    new MaintenanceTime(LocalTime.of(13, 0),LocalTime.of(13,15 )),
+                    new MaintenanceTime(LocalTime.of(17, 0),LocalTime.of(17,15 ))
             );
-            maintenanceTimingRepository.saveAll(maintenanceTimings);
+            maintenanceTimeRepository.saveAll(maintenanceTimes);
         }
 
 

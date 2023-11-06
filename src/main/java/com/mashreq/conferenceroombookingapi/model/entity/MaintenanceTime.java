@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="maintenance_timing")
-public class MaintenanceTiming {
+public class MaintenanceTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,7 +20,7 @@ public class MaintenanceTiming {
     private LocalTime startTime;
     @JsonFormat(shape =JsonFormat.Shape.STRING,pattern = "HH:mm")
     private LocalTime endTime;
-    public MaintenanceTiming(LocalTime startTime,LocalTime endTime){
+    public MaintenanceTime(LocalTime startTime, LocalTime endTime){
         this.startTime=startTime;
         this.endTime=endTime;
     }
