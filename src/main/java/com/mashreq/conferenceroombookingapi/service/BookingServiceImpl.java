@@ -5,15 +5,15 @@ import com.mashreq.conferenceroombookingapi.exception.RoomsNotAvailableException
 import com.mashreq.conferenceroombookingapi.model.dto.BookingRequest;
 import com.mashreq.conferenceroombookingapi.model.entity.Booking;
 import com.mashreq.conferenceroombookingapi.model.entity.ConferenceRoom;
-import com.mashreq.conferenceroombookingapi.model.entity.MaintenanceTiming;
 import com.mashreq.conferenceroombookingapi.repository.BookingRepository;
 import com.mashreq.conferenceroombookingapi.repository.ConferenceRoomRepository;
-import com.mashreq.conferenceroombookingapi.repository.MaintenanceTimingRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +21,9 @@ public class BookingServiceImpl implements BookingService{
 
     private final BookingRepository bookingRepository;
     private final ConferenceRoomRepository conferenceRoomRepository;
-    private final MaintenanceTimingRepository maintenanceTimingRepository;
     private final BookingValidator bookingValidator;
     @Override
+    @Transactional
     public String bookConferenceRoom(BookingRequest bookingRequest) {
         if(!bookingValidator.isBookingValidCurrentDate(bookingRequest.getStartDateTime(), bookingRequest.getEndDatetime())){
             throw   new BookingException("Booking can be done only for the current date");
@@ -32,7 +32,7 @@ public class BookingServiceImpl implements BookingService{
             throw   new BookingException("Invalid Booking interval. Bookings must be in 15-minute intervals");
         }
         if(bookingValidator.isMaintainanceTimeConflict(bookingRequest.getStartDateTime(), bookingRequest.getEndDatetime())){
-            throw   new BookingException("Rooms Not Available");
+            throw   new BookingException("Booking cannot be done during maintenance time");
         }
 
         List<ConferenceRoom> availableRooms = getAvailableRooms(bookingRequest.getStartDateTime(), bookingRequest.getEndDatetime());
@@ -42,7 +42,7 @@ public class BookingServiceImpl implements BookingService{
         ConferenceRoom conferenceRoom= availableRooms.stream()
                 .filter(room -> bookingRequest.getParticipants() <= room.getCapacity())
                 .min(Comparator.comparing(ConferenceRoom::getCapacity))
-                .orElseThrow(() -> new BookingException("No Room to Accommodate the participates provided"));
+                .orElseThrow(() -> new RoomsNotAvailableException("No Room to Accommodate the participates provided"));
 
         Booking  booking =dtoToEntity(bookingRequest,conferenceRoom);
         bookingRepository.save(booking);
@@ -57,6 +57,12 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public List<ConferenceRoom> getAvailableRooms(LocalDateTime startTime, LocalDateTime endTime) {
+        if(!bookingValidator.isBookingValidCurrentDate(startTime,endTime)){
+            throw   new BookingException("Booking can be done only for the current date");
+        }
+        if(!bookingValidator.isValidBookingInterval(startTime,endTime)){
+            throw   new BookingException("Invalid Booking interval. Bookings must be in 15-minute intervals");
+        }
 
        List<ConferenceRoom>  bookedConferenceRooms=getBookedConferenceRoom(startTime, endTime);
        List<ConferenceRoom>  allConferenceRooms=conferenceRoomRepository.findAll();
@@ -70,6 +76,13 @@ public class BookingServiceImpl implements BookingService{
 
         return filteredList;
     }
+
+    @Override
+    public void deleteBooking(Long bookingId) {
+        bookingRepository.findById(bookingId).orElseThrow(()->new BookingException("BookingId Not Found"));
+        bookingRepository.deleteById(bookingId);
+    }
+
     private Booking dtoToEntity(BookingRequest bookingRequest, ConferenceRoom conferenceRoom){
 
         return Booking.builder()
@@ -99,26 +112,6 @@ public class BookingServiceImpl implements BookingService{
         }
 
         return bookedConferenceRooms;
-    }
-    public void validateMaintainanceTime(LocalDateTime startTime, LocalDateTime endTime){
-        List<MaintenanceTiming> maintenanceTimings = maintenanceTimingRepository.findAll();
-
-        boolean isMaintenanceConflict = maintenanceTimings.stream()
-                .anyMatch(maintenanceTiming -> {
-                    if (startTime.toLocalTime().equals(maintenanceTiming.getStartTime())) {
-                        return true;
-                    }
-                    if (startTime.toLocalTime().isAfter(maintenanceTiming.getStartTime()) &&
-                            startTime.toLocalTime().isBefore(maintenanceTiming.getEndTime())) {
-                        return true;
-                    }
-                    return startTime.toLocalTime().isBefore(maintenanceTiming.getStartTime()) &&
-                            endTime.toLocalTime().isAfter(maintenanceTiming.getStartTime());
-                });
-
-        if (isMaintenanceConflict) {
-            throw new BookingException("Room Can't Be Booked During Maintenance");
-        }
     }
 
 
