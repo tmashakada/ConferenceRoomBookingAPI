@@ -87,4 +87,5 @@ the `Request Body` text area, and click on the `Execute`:
 
 If the operation is successful, you will get the following response:
 
-![Swagger UI Add Booking 1](/readme/swagger-add-booking-2.png)	 
+![image](https://github.com/tmashakada/ConferenceRoomBookingAPI/assets/3119325/2b8aba5a-80f1-4408-8a56-d540b0d869e5)
+ 
