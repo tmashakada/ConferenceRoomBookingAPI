@@ -11,6 +11,6 @@ public interface BookingService {
     String bookConferenceRoom(BookingRequest bookingRequest);
     List<Booking> getAllBookings();
 
-    List<ConferenceRoom> getAvailableRooms(LocalDateTime startTime, LocalDateTime endTime);
+    List<ConferenceRoom>  getAvailableConferenceRooms(LocalDateTime startTime, LocalDateTime endTime);
     void deleteBooking(Long bookingId);
 }

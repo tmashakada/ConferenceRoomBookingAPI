@@ -22,14 +22,14 @@ public class ConferenceRoomController {
     private  final ConferenceRoomService conferenceRoomService;
     private  final BookingService bookingService;
     @GetMapping
-    public List<ConferenceRoom> getAllBookings(){
+    public List<ConferenceRoom> getAllConferenceRooms(){
         return conferenceRoomService.getAll();
     }
     @GetMapping("/available")
     public List<ConferenceRoom> findAvailableRooms(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime startTime,
                                                    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime endTime) {
 
-        return bookingService.getAvailableRooms(startTime,endTime);
+        return bookingService.getAvailableConferenceRooms(startTime,endTime);
 
     }
 

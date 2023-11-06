@@ -26,6 +26,11 @@ public class BookingController {
     public List<Booking> getAllBookings(){
        return bookingService.getAllBookings();
     }
+    @DeleteMapping("/{booking_id}")
+    public ResponseEntity<String> deleteBooking(@PathVariable("booking_id") Long bookingId){
+         bookingService.deleteBooking(bookingId);
+        return ResponseEntity.ok("Booking Successful deleted");
+    }
 
 
 }
